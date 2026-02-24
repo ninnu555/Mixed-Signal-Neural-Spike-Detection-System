@@ -1,0 +1,1066 @@
+//Verilog-AMS HDL for "Project", "ADC_flash" "verilogams"
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+// `timescale 1s / 1ps
+
+module compNet ( // Analog-Digital Converter
+	ref,
+	in,
+  	out_d
+  );
+
+	integer N = 256;
+
+	inout [0:255] ref;
+	inout in;
+	output [0:255] out_d;
+
+	parameter comp_delay = 100u;
+
+	electrical [0:255] ref;
+	electrical in;
+	electrical ref_0, ref_1, ref_2, ref_3, ref_4, ref_5, ref_6, ref_7, ref_8, ref_9, ref_10, ref_11, ref_12, ref_13, ref_14, ref_15, ref_16, ref_17, ref_18, ref_19, ref_20, ref_21, ref_22, ref_23, ref_24, ref_25, ref_26, ref_27, ref_28, ref_29, ref_30, ref_31, ref_32, ref_33, ref_34, ref_35, ref_36, ref_37, ref_38, ref_39, ref_40, ref_41, ref_42, ref_43, ref_44, ref_45, ref_46, ref_47, ref_48, ref_49, ref_50, ref_51, ref_52, ref_53, ref_54, ref_55, ref_56, ref_57, ref_58, ref_59, ref_60, ref_61, ref_62, ref_63, ref_64, ref_65, ref_66, ref_67, ref_68, ref_69, ref_70, ref_71, ref_72, ref_73, ref_74, ref_75, ref_76, ref_77, ref_78, ref_79, ref_80, ref_81, ref_82, ref_83, ref_84, ref_85, ref_86, ref_87, ref_88, ref_89, ref_90, ref_91, ref_92, ref_93, ref_94, ref_95, ref_96, ref_97, ref_98, ref_99, ref_100, ref_101, ref_102, ref_103, ref_104, ref_105, ref_106, ref_107, ref_108, ref_109, ref_110, ref_111, ref_112, ref_113, ref_114, ref_115, ref_116, ref_117, ref_118, ref_119, ref_120, ref_121, ref_122, ref_123, ref_124, ref_125, ref_126, ref_127, ref_128, ref_129, ref_130, ref_131, ref_132, ref_133, ref_134, ref_135, ref_136, ref_137, ref_138, ref_139, ref_140, ref_141, ref_142, ref_143, ref_144, ref_145, ref_146, ref_147, ref_148, ref_149, ref_150, ref_151, ref_152, ref_153, ref_154, ref_155, ref_156, ref_157, ref_158, ref_159, ref_160, ref_161, ref_162, ref_163, ref_164, ref_165, ref_166, ref_167, ref_168, ref_169, ref_170, ref_171, ref_172, ref_173, ref_174, ref_175, ref_176, ref_177, ref_178, ref_179, ref_180, ref_181, ref_182, ref_183, ref_184, ref_185, ref_186, ref_187, ref_188, ref_189, ref_190, ref_191, ref_192, ref_193, ref_194, ref_195, ref_196, ref_197, ref_198, ref_199, ref_200, ref_201, ref_202, ref_203, ref_204, ref_205, ref_206, ref_207, ref_208, ref_209, ref_210, ref_211, ref_212, ref_213, ref_214, ref_215, ref_216, ref_217, ref_218, ref_219, ref_220, ref_221, ref_222, ref_223, ref_224, ref_225, ref_226, ref_227, ref_228, ref_229, ref_230, ref_231, ref_232, ref_233, ref_234, ref_235, ref_236, ref_237, ref_238, ref_239, ref_240, ref_241, ref_242, ref_243, ref_244, ref_245, ref_246, ref_247, ref_248, ref_249, ref_250, ref_251, ref_252, ref_253, ref_254, ref_255;
+	
+	wire [0:255] out_d;
+	reg out_d0, out_d1, out_d2, out_d3, out_d4, out_d5, out_d6, out_d7, out_d8, out_d9, out_d10, out_d11, out_d12, out_d13, out_d14, out_d15, out_d16, out_d17, out_d18, out_d19, out_d20, out_d21, out_d22, out_d23, out_d24, out_d25, out_d26, out_d27, out_d28, out_d29, out_d30, out_d31, out_d32, out_d33, out_d34, out_d35, out_d36, out_d37, out_d38, out_d39, out_d40, out_d41, out_d42, out_d43, out_d44, out_d45, out_d46, out_d47, out_d48, out_d49, out_d50, out_d51, out_d52, out_d53, out_d54, out_d55, out_d56, out_d57, out_d58, out_d59, out_d60, out_d61, out_d62, out_d63, out_d64, out_d65, out_d66, out_d67, out_d68, out_d69, out_d70, out_d71, out_d72, out_d73, out_d74, out_d75, out_d76, out_d77, out_d78, out_d79, out_d80, out_d81, out_d82, out_d83, out_d84, out_d85, out_d86, out_d87, out_d88, out_d89, out_d90, out_d91, out_d92, out_d93, out_d94, out_d95, out_d96, out_d97, out_d98, out_d99, out_d100, out_d101, out_d102, out_d103, out_d104, out_d105, out_d106, out_d107, out_d108, out_d109, out_d110, out_d111, out_d112, out_d113, out_d114, out_d115, out_d116, out_d117, out_d118, out_d119, out_d120, out_d121, out_d122, out_d123, out_d124, out_d125, out_d126, out_d127, out_d128, out_d129, out_d130, out_d131, out_d132, out_d133, out_d134, out_d135, out_d136, out_d137, out_d138, out_d139, out_d140, out_d141, out_d142, out_d143, out_d144, out_d145, out_d146, out_d147, out_d148, out_d149, out_d150, out_d151, out_d152, out_d153, out_d154, out_d155, out_d156, out_d157, out_d158, out_d159, out_d160, out_d161, out_d162, out_d163, out_d164, out_d165, out_d166, out_d167, out_d168, out_d169, out_d170, out_d171, out_d172, out_d173, out_d174, out_d175, out_d176, out_d177, out_d178, out_d179, out_d180, out_d181, out_d182, out_d183, out_d184, out_d185, out_d186, out_d187, out_d188, out_d189, out_d190, out_d191, out_d192, out_d193, out_d194, out_d195, out_d196, out_d197, out_d198, out_d199, out_d200, out_d201, out_d202, out_d203, out_d204, out_d205, out_d206, out_d207, out_d208, out_d209, out_d210, out_d211, out_d212, out_d213, out_d214, out_d215, out_d216, out_d217, out_d218, out_d219, out_d220, out_d221, out_d222, out_d223, out_d224, out_d225, out_d226, out_d227, out_d228, out_d229, out_d230, out_d231, out_d232, out_d233, out_d234, out_d235, out_d236, out_d237, out_d238, out_d239, out_d240, out_d241, out_d242, out_d243, out_d244, out_d245, out_d246, out_d247, out_d248, out_d249, out_d250, out_d251, out_d252, out_d253, out_d254, out_d255;
+	
+	analog begin
+		// assegnazione in questa maniera dell'array di potenziali per poter lavorare 
+		// coi potenziali appunto. Infatti verilogA sembra non gradire il lavorare con
+		// gli elementi di un array di segnali 
+		V(ref_0)   <+ V(ref[0]);
+		V(ref_1)   <+ V(ref[1]);
+		V(ref_2)   <+ V(ref[2]);
+		V(ref_3)   <+ V(ref[3]);
+		V(ref_4)   <+ V(ref[4]);
+		V(ref_5)   <+ V(ref[5]);
+		V(ref_6)   <+ V(ref[6]);
+		V(ref_7)   <+ V(ref[7]);
+		V(ref_8)   <+ V(ref[8]);
+		V(ref_9)   <+ V(ref[9]);
+		V(ref_10)  <+ V(ref[10]);
+		V(ref_11)  <+ V(ref[11]);
+		V(ref_12)  <+ V(ref[12]);
+		V(ref_13)  <+ V(ref[13]);
+		V(ref_14)  <+ V(ref[14]);
+		V(ref_15)  <+ V(ref[15]);
+		V(ref_16)  <+ V(ref[16]);
+		V(ref_17)  <+ V(ref[17]);
+		V(ref_18)  <+ V(ref[18]);
+		V(ref_19)  <+ V(ref[19]);
+		V(ref_20)  <+ V(ref[20]);
+		V(ref_21)  <+ V(ref[21]);
+		V(ref_22)  <+ V(ref[22]);
+		V(ref_23)  <+ V(ref[23]);
+		V(ref_24)  <+ V(ref[24]);
+		V(ref_25)  <+ V(ref[25]);
+		V(ref_26)  <+ V(ref[26]);
+		V(ref_27)  <+ V(ref[27]);
+		V(ref_28)  <+ V(ref[28]);
+		V(ref_29)  <+ V(ref[29]);
+		V(ref_30)  <+ V(ref[30]);
+		V(ref_31)  <+ V(ref[31]);
+		V(ref_32)  <+ V(ref[32]);
+		V(ref_33)  <+ V(ref[33]);
+		V(ref_34)  <+ V(ref[34]);
+		V(ref_35)  <+ V(ref[35]);
+		V(ref_36)  <+ V(ref[36]);
+		V(ref_37)  <+ V(ref[37]);
+		V(ref_38)  <+ V(ref[38]);
+		V(ref_39)  <+ V(ref[39]);
+		V(ref_40)  <+ V(ref[40]);
+		V(ref_41)  <+ V(ref[41]);
+		V(ref_42)  <+ V(ref[42]);
+		V(ref_43)  <+ V(ref[43]);
+		V(ref_44)  <+ V(ref[44]);
+		V(ref_45)  <+ V(ref[45]);
+		V(ref_46)  <+ V(ref[46]);
+		V(ref_47)  <+ V(ref[47]);
+		V(ref_48)  <+ V(ref[48]);
+		V(ref_49)  <+ V(ref[49]);
+		V(ref_50)  <+ V(ref[50]);
+		V(ref_51)  <+ V(ref[51]);
+		V(ref_52)  <+ V(ref[52]);
+		V(ref_53)  <+ V(ref[53]);
+		V(ref_54)  <+ V(ref[54]);
+		V(ref_55)  <+ V(ref[55]);
+		V(ref_56)  <+ V(ref[56]);
+		V(ref_57)  <+ V(ref[57]);
+		V(ref_58)  <+ V(ref[58]);
+		V(ref_59)  <+ V(ref[59]);
+		V(ref_60)  <+ V(ref[60]);
+		V(ref_61)  <+ V(ref[61]);
+		V(ref_62)  <+ V(ref[62]);
+		V(ref_63)  <+ V(ref[63]);
+		V(ref_64)  <+ V(ref[64]);
+		V(ref_65)  <+ V(ref[65]);
+		V(ref_66)  <+ V(ref[66]);
+		V(ref_67)  <+ V(ref[67]);
+		V(ref_68)  <+ V(ref[68]);
+		V(ref_69)  <+ V(ref[69]);
+		V(ref_70)  <+ V(ref[70]);
+		V(ref_71)  <+ V(ref[71]);
+		V(ref_72)  <+ V(ref[72]);
+		V(ref_73)  <+ V(ref[73]);
+		V(ref_74)  <+ V(ref[74]);
+		V(ref_75)  <+ V(ref[75]);
+		V(ref_76)  <+ V(ref[76]);
+		V(ref_77)  <+ V(ref[77]);
+		V(ref_78)  <+ V(ref[78]);
+		V(ref_79)  <+ V(ref[79]);
+		V(ref_80)  <+ V(ref[80]);
+		V(ref_81)  <+ V(ref[81]);
+		V(ref_82)  <+ V(ref[82]);
+		V(ref_83)  <+ V(ref[83]);
+		V(ref_84)  <+ V(ref[84]);
+		V(ref_85)  <+ V(ref[85]);
+		V(ref_86)  <+ V(ref[86]);
+		V(ref_87)  <+ V(ref[87]);
+		V(ref_88)  <+ V(ref[88]);
+		V(ref_89)  <+ V(ref[89]);
+		V(ref_90)  <+ V(ref[90]);
+		V(ref_91)  <+ V(ref[91]);
+		V(ref_92)  <+ V(ref[92]);
+		V(ref_93)  <+ V(ref[93]);
+		V(ref_94)  <+ V(ref[94]);
+		V(ref_95)  <+ V(ref[95]);
+		V(ref_96)  <+ V(ref[96]);
+		V(ref_97)  <+ V(ref[97]);
+		V(ref_98)  <+ V(ref[98]);
+		V(ref_99)  <+ V(ref[99]);
+		V(ref_100) <+ V(ref[100]);
+		V(ref_101) <+ V(ref[101]);
+		V(ref_102) <+ V(ref[102]);
+		V(ref_103) <+ V(ref[103]);
+		V(ref_104) <+ V(ref[104]);
+		V(ref_105) <+ V(ref[105]);
+		V(ref_106) <+ V(ref[106]);
+		V(ref_107) <+ V(ref[107]);
+		V(ref_108) <+ V(ref[108]);
+		V(ref_109) <+ V(ref[109]);
+		V(ref_110) <+ V(ref[110]);
+		V(ref_111) <+ V(ref[111]);
+		V(ref_112) <+ V(ref[112]);
+		V(ref_113) <+ V(ref[113]);
+		V(ref_114) <+ V(ref[114]);
+		V(ref_115) <+ V(ref[115]);
+		V(ref_116) <+ V(ref[116]);
+		V(ref_117) <+ V(ref[117]);
+		V(ref_118) <+ V(ref[118]);
+		V(ref_119) <+ V(ref[119]);
+		V(ref_120) <+ V(ref[120]);
+		V(ref_121) <+ V(ref[121]);
+		V(ref_122) <+ V(ref[122]);
+		V(ref_123) <+ V(ref[123]);
+		V(ref_124) <+ V(ref[124]);
+		V(ref_125) <+ V(ref[125]);
+		V(ref_126) <+ V(ref[126]);
+		V(ref_127) <+ V(ref[127]);
+		V(ref_128) <+ V(ref[128]);
+		V(ref_129) <+ V(ref[129]);
+		V(ref_130) <+ V(ref[130]);
+		V(ref_131) <+ V(ref[131]);
+		V(ref_132) <+ V(ref[132]);
+		V(ref_133) <+ V(ref[133]);
+		V(ref_134) <+ V(ref[134]);
+		V(ref_135) <+ V(ref[135]);
+		V(ref_136) <+ V(ref[136]);
+		V(ref_137) <+ V(ref[137]);
+		V(ref_138) <+ V(ref[138]);
+		V(ref_139) <+ V(ref[139]);
+		V(ref_140) <+ V(ref[140]);
+		V(ref_141) <+ V(ref[141]);
+		V(ref_142) <+ V(ref[142]);
+		V(ref_143) <+ V(ref[143]);
+		V(ref_144) <+ V(ref[144]);
+		V(ref_145) <+ V(ref[145]);
+		V(ref_146) <+ V(ref[146]);
+		V(ref_147) <+ V(ref[147]);
+		V(ref_148) <+ V(ref[148]);
+		V(ref_149) <+ V(ref[149]);
+		V(ref_150) <+ V(ref[150]);
+		V(ref_151) <+ V(ref[151]);
+		V(ref_152) <+ V(ref[152]);
+		V(ref_153) <+ V(ref[153]);
+		V(ref_154) <+ V(ref[154]);
+		V(ref_155) <+ V(ref[155]);
+		V(ref_156) <+ V(ref[156]);
+		V(ref_157) <+ V(ref[157]);
+		V(ref_158) <+ V(ref[158]);
+		V(ref_159) <+ V(ref[159]);
+		V(ref_160) <+ V(ref[160]);
+		V(ref_161) <+ V(ref[161]);
+		V(ref_162) <+ V(ref[162]);
+		V(ref_163) <+ V(ref[163]);
+		V(ref_164) <+ V(ref[164]);
+		V(ref_165) <+ V(ref[165]);
+		V(ref_166) <+ V(ref[166]);
+		V(ref_167) <+ V(ref[167]);
+		V(ref_168) <+ V(ref[168]);
+		V(ref_169) <+ V(ref[169]);
+		V(ref_170) <+ V(ref[170]);
+		V(ref_171) <+ V(ref[171]);
+		V(ref_172) <+ V(ref[172]);
+		V(ref_173) <+ V(ref[173]);
+		V(ref_174) <+ V(ref[174]);
+		V(ref_175) <+ V(ref[175]);
+		V(ref_176) <+ V(ref[176]);
+		V(ref_177) <+ V(ref[177]);
+		V(ref_178) <+ V(ref[178]);
+		V(ref_179) <+ V(ref[179]);
+		V(ref_180) <+ V(ref[180]);
+		V(ref_181) <+ V(ref[181]);
+		V(ref_182) <+ V(ref[182]);
+		V(ref_183) <+ V(ref[183]);
+		V(ref_184) <+ V(ref[184]);
+		V(ref_185) <+ V(ref[185]);
+		V(ref_186) <+ V(ref[186]);
+		V(ref_187) <+ V(ref[187]);
+		V(ref_188) <+ V(ref[188]);
+		V(ref_189) <+ V(ref[189]);
+		V(ref_190) <+ V(ref[190]);
+		V(ref_191) <+ V(ref[191]);
+		V(ref_192) <+ V(ref[192]);
+		V(ref_193) <+ V(ref[193]);
+		V(ref_194) <+ V(ref[194]);
+		V(ref_195) <+ V(ref[195]);
+		V(ref_196) <+ V(ref[196]);
+		V(ref_197) <+ V(ref[197]);
+		V(ref_198) <+ V(ref[198]);
+		V(ref_199) <+ V(ref[199]);
+		V(ref_200) <+ V(ref[200]);
+		V(ref_201) <+ V(ref[201]);
+		V(ref_202) <+ V(ref[202]);
+		V(ref_203) <+ V(ref[203]);
+		V(ref_204) <+ V(ref[204]);
+		V(ref_205) <+ V(ref[205]);
+		V(ref_206) <+ V(ref[206]);
+		V(ref_207) <+ V(ref[207]);
+		V(ref_208) <+ V(ref[208]);
+		V(ref_209) <+ V(ref[209]);
+		V(ref_210) <+ V(ref[210]);
+		V(ref_211) <+ V(ref[211]);
+		V(ref_212) <+ V(ref[212]);
+		V(ref_213) <+ V(ref[213]);
+		V(ref_214) <+ V(ref[214]);
+		V(ref_215) <+ V(ref[215]);
+		V(ref_216) <+ V(ref[216]);
+		V(ref_217) <+ V(ref[217]);
+		V(ref_218) <+ V(ref[218]);
+		V(ref_219) <+ V(ref[219]);
+		V(ref_220) <+ V(ref[220]);
+		V(ref_221) <+ V(ref[221]);
+		V(ref_222) <+ V(ref[222]);
+		V(ref_223) <+ V(ref[223]);
+		V(ref_224) <+ V(ref[224]);
+		V(ref_225) <+ V(ref[225]);
+		V(ref_226) <+ V(ref[226]);
+		V(ref_227) <+ V(ref[227]);
+		V(ref_228) <+ V(ref[228]);
+		V(ref_229) <+ V(ref[229]);
+		V(ref_230) <+ V(ref[230]);
+		V(ref_231) <+ V(ref[231]);
+		V(ref_232) <+ V(ref[232]);
+		V(ref_233) <+ V(ref[233]);
+		V(ref_234) <+ V(ref[234]);
+		V(ref_235) <+ V(ref[235]);
+		V(ref_236) <+ V(ref[236]);
+		V(ref_237) <+ V(ref[237]);
+		V(ref_238) <+ V(ref[238]);
+		V(ref_239) <+ V(ref[239]);
+		V(ref_240) <+ V(ref[240]);
+		V(ref_241) <+ V(ref[241]);
+		V(ref_242) <+ V(ref[242]);
+		V(ref_243) <+ V(ref[243]);
+		V(ref_244) <+ V(ref[244]);
+		V(ref_245) <+ V(ref[245]);
+		V(ref_246) <+ V(ref[246]);
+		V(ref_247) <+ V(ref[247]);
+		V(ref_248) <+ V(ref[248]);
+		V(ref_249) <+ V(ref[249]);
+		V(ref_250) <+ V(ref[250]);
+		V(ref_251) <+ V(ref[251]);
+		V(ref_252) <+ V(ref[252]);
+		V(ref_253) <+ V(ref[253]);
+		V(ref_254) <+ V(ref[254]);
+		V(ref_255) <+ V(ref[255]);
+end
+	
+	// logica dei 256 comparatori.
+	// if Vin > Vref_x => out = 0
+	// else 				 out => 1
+	always @(above(V(in) - V(ref_0)))        out_d0 = #comp_delay 1'b0;
+	always @(above(V(ref_0) - V(in)))        out_d0 = #comp_delay 1'b1;
+
+	always @(above(V(in) - V(ref_1)))        out_d1 = 1'b0;
+	always @(above(V(ref_1) - V(in)))        out_d1 = 1'b1;
+
+	always @(above(V(in) - V(ref_2)))        out_d2 = 1'b0;
+	always @(above(V(ref_2) - V(in)))        out_d2 = 1'b1;
+
+	always @(above(V(in) - V(ref_3)))        out_d3 = 1'b0;
+	always @(above(V(ref_3) - V(in)))        out_d3 = 1'b1;
+
+	always @(above(V(in) - V(ref_4)))        out_d4 = 1'b0;
+	always @(above(V(ref_4) - V(in)))        out_d4 = 1'b1;
+
+	always @(above(V(in) - V(ref_5)))        out_d5 = 1'b0;
+	always @(above(V(ref_5) - V(in)))        out_d5 = 1'b1;
+
+	always @(above(V(in) - V(ref_6)))        out_d6 = 1'b0;
+	always @(above(V(ref_6) - V(in)))        out_d6 = 1'b1;
+
+	always @(above(V(in) - V(ref_7)))        out_d7 = 1'b0;
+	always @(above(V(ref_7) - V(in)))        out_d7 = 1'b1;
+
+	always @(above(V(in) - V(ref_8)))        out_d8 = 1'b0;
+	always @(above(V(ref_8) - V(in)))        out_d8 = 1'b1;
+
+	always @(above(V(in) - V(ref_9)))        out_d9 = 1'b0;
+	always @(above(V(ref_9) - V(in)))        out_d9 = 1'b1;
+
+	always @(above(V(in) - V(ref_10)))       out_d10 = 1'b0;
+	always @(above(V(ref_10) - V(in)))       out_d10 = 1'b1;
+
+	always @(above(V(in) - V(ref_11)))       out_d11 = 1'b0;
+	always @(above(V(ref_11) - V(in)))       out_d11 = 1'b1;
+
+	always @(above(V(in) - V(ref_12)))       out_d12 = 1'b0;
+	always @(above(V(ref_12) - V(in)))       out_d12 = 1'b1;
+
+	always @(above(V(in) - V(ref_13)))       out_d13 = 1'b0;
+	always @(above(V(ref_13) - V(in)))       out_d13 = 1'b1;
+
+	always @(above(V(in) - V(ref_14)))       out_d14 = 1'b0;
+	always @(above(V(ref_14) - V(in)))       out_d14 = 1'b1;
+
+	always @(above(V(in) - V(ref_15)))       out_d15 = 1'b0;
+	always @(above(V(ref_15) - V(in)))       out_d15 = 1'b1;
+
+	always @(above(V(in) - V(ref_16)))       out_d16 = 1'b0;
+	always @(above(V(ref_16) - V(in)))       out_d16 = 1'b1;
+
+	always @(above(V(in) - V(ref_17)))       out_d17 = 1'b0;
+	always @(above(V(ref_17) - V(in)))       out_d17 = 1'b1;
+
+	always @(above(V(in) - V(ref_18)))       out_d18 = 1'b0;
+	always @(above(V(ref_18) - V(in)))       out_d18 = 1'b1;
+
+	always @(above(V(in) - V(ref_19)))       out_d19 = 1'b0;
+	always @(above(V(ref_19) - V(in)))       out_d19 = 1'b1;
+
+	always @(above(V(in) - V(ref_20)))       out_d20 = 1'b0;
+	always @(above(V(ref_20) - V(in)))       out_d20 = 1'b1;
+
+	always @(above(V(in) - V(ref_21)))       out_d21 = 1'b0;
+	always @(above(V(ref_21) - V(in)))       out_d21 = 1'b1;
+
+	always @(above(V(in) - V(ref_22)))       out_d22 = 1'b0;
+	always @(above(V(ref_22) - V(in)))       out_d22 = 1'b1;
+
+	always @(above(V(in) - V(ref_23)))       out_d23 = 1'b0;
+	always @(above(V(ref_23) - V(in)))       out_d23 = 1'b1;
+
+	always @(above(V(in) - V(ref_24)))       out_d24 = 1'b0;
+	always @(above(V(ref_24) - V(in)))       out_d24 = 1'b1;
+
+	always @(above(V(in) - V(ref_25)))       out_d25 = 1'b0;
+	always @(above(V(ref_25) - V(in)))       out_d25 = 1'b1;
+
+	always @(above(V(in) - V(ref_26)))       out_d26 = 1'b0;
+	always @(above(V(ref_26) - V(in)))       out_d26 = 1'b1;
+
+	always @(above(V(in) - V(ref_27)))       out_d27 = 1'b0;
+	always @(above(V(ref_27) - V(in)))       out_d27 = 1'b1;
+
+	always @(above(V(in) - V(ref_28)))       out_d28 = 1'b0;
+	always @(above(V(ref_28) - V(in)))       out_d28 = 1'b1;
+
+	always @(above(V(in) - V(ref_29)))       out_d29 = 1'b0;
+	always @(above(V(ref_29) - V(in)))       out_d29 = 1'b1;
+
+	always @(above(V(in) - V(ref_30)))       out_d30 = 1'b0;
+	always @(above(V(ref_30) - V(in)))       out_d30 = 1'b1;
+
+	always @(above(V(in) - V(ref_31)))       out_d31 = 1'b0;
+	always @(above(V(ref_31) - V(in)))       out_d31 = 1'b1;
+
+	always @(above(V(in) - V(ref_32)))       out_d32 = 1'b0;
+	always @(above(V(ref_32) - V(in)))       out_d32 = 1'b1;
+
+	always @(above(V(in) - V(ref_33)))       out_d33 = 1'b0;
+	always @(above(V(ref_33) - V(in)))       out_d33 = 1'b1;
+
+	always @(above(V(in) - V(ref_34)))       out_d34 = 1'b0;
+	always @(above(V(ref_34) - V(in)))       out_d34 = 1'b1;
+
+	always @(above(V(in) - V(ref_35)))       out_d35 = 1'b0;
+	always @(above(V(ref_35) - V(in)))       out_d35 = 1'b1;
+
+	always @(above(V(in) - V(ref_36)))       out_d36 = 1'b0;
+	always @(above(V(ref_36) - V(in)))       out_d36 = 1'b1;
+
+	always @(above(V(in) - V(ref_37)))       out_d37 = 1'b0;
+	always @(above(V(ref_37) - V(in)))       out_d37 = 1'b1;
+
+	always @(above(V(in) - V(ref_38)))       out_d38 = 1'b0;
+	always @(above(V(ref_38) - V(in)))       out_d38 = 1'b1;
+
+	always @(above(V(in) - V(ref_39)))       out_d39 = 1'b0;
+	always @(above(V(ref_39) - V(in)))       out_d39 = 1'b1;
+
+	always @(above(V(in) - V(ref_40)))       out_d40 = 1'b0;
+	always @(above(V(ref_40) - V(in)))       out_d40 = 1'b1;
+
+	always @(above(V(in) - V(ref_41)))       out_d41 = 1'b0;
+	always @(above(V(ref_41) - V(in)))       out_d41 = 1'b1;
+
+	always @(above(V(in) - V(ref_42)))       out_d42 = 1'b0;
+	always @(above(V(ref_42) - V(in)))       out_d42 = 1'b1;
+
+	always @(above(V(in) - V(ref_43)))       out_d43 = 1'b0;
+	always @(above(V(ref_43) - V(in)))       out_d43 = 1'b1;
+
+	always @(above(V(in) - V(ref_44)))       out_d44 = 1'b0;
+	always @(above(V(ref_44) - V(in)))       out_d44 = 1'b1;
+
+	always @(above(V(in) - V(ref_45)))       out_d45 = 1'b0;
+	always @(above(V(ref_45) - V(in)))       out_d45 = 1'b1;
+
+	always @(above(V(in) - V(ref_46)))       out_d46 = 1'b0;
+	always @(above(V(ref_46) - V(in)))       out_d46 = 1'b1;
+
+	always @(above(V(in) - V(ref_47)))       out_d47 = 1'b0;
+	always @(above(V(ref_47) - V(in)))       out_d47 = 1'b1;
+
+	always @(above(V(in) - V(ref_48)))       out_d48 = 1'b0;
+	always @(above(V(ref_48) - V(in)))       out_d48 = 1'b1;
+
+	always @(above(V(in) - V(ref_49)))       out_d49 = 1'b0;
+	always @(above(V(ref_49) - V(in)))       out_d49 = 1'b1;
+
+	always @(above(V(in) - V(ref_50)))       out_d50 = 1'b0;
+	always @(above(V(ref_50) - V(in)))       out_d50 = 1'b1;
+
+	always @(above(V(in) - V(ref_51)))       out_d51 = 1'b0;
+	always @(above(V(ref_51) - V(in)))       out_d51 = 1'b1;
+
+	always @(above(V(in) - V(ref_52)))       out_d52 = 1'b0;
+	always @(above(V(ref_52) - V(in)))       out_d52 = 1'b1;
+
+	always @(above(V(in) - V(ref_53)))       out_d53 = 1'b0;
+	always @(above(V(ref_53) - V(in)))       out_d53 = 1'b1;
+
+	always @(above(V(in) - V(ref_54)))       out_d54 = 1'b0;
+	always @(above(V(ref_54) - V(in)))       out_d54 = 1'b1;
+
+	always @(above(V(in) - V(ref_55)))       out_d55 = 1'b0;
+	always @(above(V(ref_55) - V(in)))       out_d55 = 1'b1;
+
+	always @(above(V(in) - V(ref_56)))       out_d56 = 1'b0;
+	always @(above(V(ref_56) - V(in)))       out_d56 = 1'b1;
+
+	always @(above(V(in) - V(ref_57)))       out_d57 = 1'b0;
+	always @(above(V(ref_57) - V(in)))       out_d57 = 1'b1;
+
+	always @(above(V(in) - V(ref_58)))       out_d58 = 1'b0;
+	always @(above(V(ref_58) - V(in)))       out_d58 = 1'b1;
+
+	always @(above(V(in) - V(ref_59)))       out_d59 = 1'b0;
+	always @(above(V(ref_59) - V(in)))       out_d59 = 1'b1;
+
+	always @(above(V(in) - V(ref_60)))       out_d60 = 1'b0;
+	always @(above(V(ref_60) - V(in)))       out_d60 = 1'b1;
+
+	always @(above(V(in) - V(ref_61)))       out_d61 = 1'b0;
+	always @(above(V(ref_61) - V(in)))       out_d61 = 1'b1;
+
+	always @(above(V(in) - V(ref_62)))       out_d62 = 1'b0;
+	always @(above(V(ref_62) - V(in)))       out_d62 = 1'b1;
+
+	always @(above(V(in) - V(ref_63)))       out_d63 = 1'b0;
+	always @(above(V(ref_63) - V(in)))       out_d63 = 1'b1;
+
+	always @(above(V(in) - V(ref_64)))       out_d64 = 1'b0;
+	always @(above(V(ref_64) - V(in)))       out_d64 = 1'b1;
+
+	always @(above(V(in) - V(ref_65)))       out_d65 = 1'b0;
+	always @(above(V(ref_65) - V(in)))       out_d65 = 1'b1;
+
+	always @(above(V(in) - V(ref_66)))       out_d66 = 1'b0;
+	always @(above(V(ref_66) - V(in)))       out_d66 = 1'b1;
+
+	always @(above(V(in) - V(ref_67)))       out_d67 = 1'b0;
+	always @(above(V(ref_67) - V(in)))       out_d67 = 1'b1;
+
+	always @(above(V(in) - V(ref_68)))       out_d68 = 1'b0;
+	always @(above(V(ref_68) - V(in)))       out_d68 = 1'b1;
+
+	always @(above(V(in) - V(ref_69)))       out_d69 = 1'b0;
+	always @(above(V(ref_69) - V(in)))       out_d69 = 1'b1;
+
+	always @(above(V(in) - V(ref_70)))       out_d70 = 1'b0;
+	always @(above(V(ref_70) - V(in)))       out_d70 = 1'b1;
+
+	always @(above(V(in) - V(ref_71)))       out_d71 = 1'b0;
+	always @(above(V(ref_71) - V(in)))       out_d71 = 1'b1;
+
+	always @(above(V(in) - V(ref_72)))       out_d72 = 1'b0;
+	always @(above(V(ref_72) - V(in)))       out_d72 = 1'b1;
+
+	always @(above(V(in) - V(ref_73)))       out_d73 = 1'b0;
+	always @(above(V(ref_73) - V(in)))       out_d73 = 1'b1;
+
+	always @(above(V(in) - V(ref_74)))       out_d74 = 1'b0;
+	always @(above(V(ref_74) - V(in)))       out_d74 = 1'b1;
+
+	always @(above(V(in) - V(ref_75)))       out_d75 = 1'b0;
+	always @(above(V(ref_75) - V(in)))       out_d75 = 1'b1;
+
+	always @(above(V(in) - V(ref_76)))       out_d76 = 1'b0;
+	always @(above(V(ref_76) - V(in)))       out_d76 = 1'b1;
+
+	always @(above(V(in) - V(ref_77)))       out_d77 = 1'b0;
+	always @(above(V(ref_77) - V(in)))       out_d77 = 1'b1;
+
+	always @(above(V(in) - V(ref_78)))       out_d78 = 1'b0;
+	always @(above(V(ref_78) - V(in)))       out_d78 = 1'b1;
+
+	always @(above(V(in) - V(ref_79)))       out_d79 = 1'b0;
+	always @(above(V(ref_79) - V(in)))       out_d79 = 1'b1;
+
+	always @(above(V(in) - V(ref_80)))       out_d80 = 1'b0;
+	always @(above(V(ref_80) - V(in)))       out_d80 = 1'b1;
+
+	always @(above(V(in) - V(ref_81)))       out_d81 = 1'b0;
+	always @(above(V(ref_81) - V(in)))       out_d81 = 1'b1;
+
+	always @(above(V(in) - V(ref_82)))       out_d82 = 1'b0;
+	always @(above(V(ref_82) - V(in)))       out_d82 = 1'b1;
+
+	always @(above(V(in) - V(ref_83)))       out_d83 = 1'b0;
+	always @(above(V(ref_83) - V(in)))       out_d83 = 1'b1;
+
+	always @(above(V(in) - V(ref_84)))       out_d84 = 1'b0;
+	always @(above(V(ref_84) - V(in)))       out_d84 = 1'b1;
+
+	always @(above(V(in) - V(ref_85)))       out_d85 = 1'b0;
+	always @(above(V(ref_85) - V(in)))       out_d85 = 1'b1;
+
+	always @(above(V(in) - V(ref_86)))       out_d86 = 1'b0;
+	always @(above(V(ref_86) - V(in)))       out_d86 = 1'b1;
+
+	always @(above(V(in) - V(ref_87)))       out_d87 = 1'b0;
+	always @(above(V(ref_87) - V(in)))       out_d87 = 1'b1;
+
+	always @(above(V(in) - V(ref_88)))       out_d88 = 1'b0;
+	always @(above(V(ref_88) - V(in)))       out_d88 = 1'b1;
+
+	always @(above(V(in) - V(ref_89)))       out_d89 = 1'b0;
+	always @(above(V(ref_89) - V(in)))       out_d89 = 1'b1;
+
+	always @(above(V(in) - V(ref_90)))       out_d90 = 1'b0;
+	always @(above(V(ref_90) - V(in)))       out_d90 = 1'b1;
+
+	always @(above(V(in) - V(ref_91)))       out_d91 = 1'b0;
+	always @(above(V(ref_91) - V(in)))       out_d91 = 1'b1;
+
+	always @(above(V(in) - V(ref_92)))       out_d92 = 1'b0;
+	always @(above(V(ref_92) - V(in)))       out_d92 = 1'b1;
+
+	always @(above(V(in) - V(ref_93)))       out_d93 = 1'b0;
+	always @(above(V(ref_93) - V(in)))       out_d93 = 1'b1;
+
+	always @(above(V(in) - V(ref_94)))       out_d94 = 1'b0;
+	always @(above(V(ref_94) - V(in)))       out_d94 = 1'b1;
+
+	always @(above(V(in) - V(ref_95)))       out_d95 = 1'b0;
+	always @(above(V(ref_95) - V(in)))       out_d95 = 1'b1;
+
+	always @(above(V(in) - V(ref_96)))       out_d96 = 1'b0;
+	always @(above(V(ref_96) - V(in)))       out_d96 = 1'b1;
+
+	always @(above(V(in) - V(ref_97)))       out_d97 = 1'b0;
+	always @(above(V(ref_97) - V(in)))       out_d97 = 1'b1;
+
+	always @(above(V(in) - V(ref_98)))       out_d98 = 1'b0;
+	always @(above(V(ref_98) - V(in)))       out_d98 = 1'b1;
+
+	always @(above(V(in) - V(ref_99)))       out_d99 = 1'b0;
+	always @(above(V(ref_99) - V(in)))       out_d99 = 1'b1;
+
+	always @(above(V(in) - V(ref_100)))      out_d100 = 1'b0;
+	always @(above(V(ref_100) - V(in)))      out_d100 = 1'b1;
+
+	always @(above(V(in) - V(ref_101)))      out_d101 = 1'b0;
+	always @(above(V(ref_101) - V(in)))      out_d101 = 1'b1;
+
+	always @(above(V(in) - V(ref_102)))      out_d102 = 1'b0;
+	always @(above(V(ref_102) - V(in)))      out_d102 = 1'b1;
+
+	always @(above(V(in) - V(ref_103)))      out_d103 = 1'b0;
+	always @(above(V(ref_103) - V(in)))      out_d103 = 1'b1;
+
+	always @(above(V(in) - V(ref_104)))      out_d104 = 1'b0;
+	always @(above(V(ref_104) - V(in)))      out_d104 = 1'b1;
+
+	always @(above(V(in) - V(ref_105)))      out_d105 = 1'b0;
+	always @(above(V(ref_105) - V(in)))      out_d105 = 1'b1;
+
+	always @(above(V(in) - V(ref_106)))      out_d106 = 1'b0;
+	always @(above(V(ref_106) - V(in)))      out_d106 = 1'b1;
+
+	always @(above(V(in) - V(ref_107)))      out_d107 = 1'b0;
+	always @(above(V(ref_107) - V(in)))      out_d107 = 1'b1;
+
+	always @(above(V(in) - V(ref_108)))      out_d108 = 1'b0;
+	always @(above(V(ref_108) - V(in)))      out_d108 = 1'b1;
+
+	always @(above(V(in) - V(ref_109)))      out_d109 = 1'b0;
+	always @(above(V(ref_109) - V(in)))      out_d109 = 1'b1;
+
+	always @(above(V(in) - V(ref_110)))      out_d110 = 1'b0;
+	always @(above(V(ref_110) - V(in)))      out_d110 = 1'b1;
+
+	always @(above(V(in) - V(ref_111)))      out_d111 = 1'b0;
+	always @(above(V(ref_111) - V(in)))      out_d111 = 1'b1;
+
+	always @(above(V(in) - V(ref_112)))      out_d112 = 1'b0;
+	always @(above(V(ref_112) - V(in)))      out_d112 = 1'b1;
+
+	always @(above(V(in) - V(ref_113)))      out_d113 = 1'b0;
+	always @(above(V(ref_113) - V(in)))      out_d113 = 1'b1;
+
+	always @(above(V(in) - V(ref_114)))      out_d114 = 1'b0;
+	always @(above(V(ref_114) - V(in)))      out_d114 = 1'b1;
+
+	always @(above(V(in) - V(ref_115)))      out_d115 = 1'b0;
+	always @(above(V(ref_115) - V(in)))      out_d115 = 1'b1;
+
+	always @(above(V(in) - V(ref_116)))      out_d116 = 1'b0;
+	always @(above(V(ref_116) - V(in)))      out_d116 = 1'b1;
+
+	always @(above(V(in) - V(ref_117)))      out_d117 = 1'b0;
+	always @(above(V(ref_117) - V(in)))      out_d117 = 1'b1;
+
+	always @(above(V(in) - V(ref_118)))      out_d118 = 1'b0;
+	always @(above(V(ref_118) - V(in)))      out_d118 = 1'b1;
+
+	always @(above(V(in) - V(ref_119)))      out_d119 = 1'b0;
+	always @(above(V(ref_119) - V(in)))      out_d119 = 1'b1;
+
+	always @(above(V(in) - V(ref_120)))      out_d120 = 1'b0;
+	always @(above(V(ref_120) - V(in)))      out_d120 = 1'b1;
+
+	always @(above(V(in) - V(ref_121)))      out_d121 = 1'b0;
+	always @(above(V(ref_121) - V(in)))      out_d121 = 1'b1;
+
+	always @(above(V(in) - V(ref_122)))      out_d122 = 1'b0;
+	always @(above(V(ref_122) - V(in)))      out_d122 = 1'b1;
+
+	always @(above(V(in) - V(ref_123)))      out_d123 = 1'b0;
+	always @(above(V(ref_123) - V(in)))      out_d123 = 1'b1;
+
+	always @(above(V(in) - V(ref_124)))      out_d124 = 1'b0;
+	always @(above(V(ref_124) - V(in)))      out_d124 = 1'b1;
+
+	always @(above(V(in) - V(ref_125)))      out_d125 = 1'b0;
+	always @(above(V(ref_125) - V(in)))      out_d125 = 1'b1;
+
+	always @(above(V(in) - V(ref_126)))      out_d126 = 1'b0;
+	always @(above(V(ref_126) - V(in)))      out_d126 = 1'b1;
+
+	always @(above(V(in) - V(ref_127)))      out_d127 = 1'b0;
+	always @(above(V(ref_127) - V(in)))      out_d127 = 1'b1;
+
+	always @(above(V(in) - V(ref_128)))      out_d128 = 1'b0;
+	always @(above(V(ref_128) - V(in)))      out_d128 = 1'b1;
+
+	always @(above(V(in) - V(ref_129)))      out_d129 = 1'b0;
+	always @(above(V(ref_129) - V(in)))      out_d129 = 1'b1;
+
+	always @(above(V(in) - V(ref_130)))      out_d130 = 1'b0;
+	always @(above(V(ref_130) - V(in)))      out_d130 = 1'b1;
+
+	always @(above(V(in) - V(ref_131)))      out_d131 = 1'b0;
+	always @(above(V(ref_131) - V(in)))      out_d131 = 1'b1;
+
+	always @(above(V(in) - V(ref_132)))      out_d132 = 1'b0;
+	always @(above(V(ref_132) - V(in)))      out_d132 = 1'b1;
+
+	always @(above(V(in) - V(ref_133)))      out_d133 = 1'b0;
+	always @(above(V(ref_133) - V(in)))      out_d133 = 1'b1;
+
+	always @(above(V(in) - V(ref_134)))      out_d134 = 1'b0;
+	always @(above(V(ref_134) - V(in)))      out_d134 = 1'b1;
+
+	always @(above(V(in) - V(ref_135)))      out_d135 = 1'b0;
+	always @(above(V(ref_135) - V(in)))      out_d135 = 1'b1;
+
+	always @(above(V(in) - V(ref_136)))      out_d136 = 1'b0;
+	always @(above(V(ref_136) - V(in)))      out_d136 = 1'b1;
+
+	always @(above(V(in) - V(ref_137)))      out_d137 = 1'b0;
+	always @(above(V(ref_137) - V(in)))      out_d137 = 1'b1;
+
+	always @(above(V(in) - V(ref_138)))      out_d138 = 1'b0;
+	always @(above(V(ref_138) - V(in)))      out_d138 = 1'b1;
+
+	always @(above(V(in) - V(ref_139)))      out_d139 = 1'b0;
+	always @(above(V(ref_139) - V(in)))      out_d139 = 1'b1;
+
+	always @(above(V(in) - V(ref_140)))      out_d140 = 1'b0;
+	always @(above(V(ref_140) - V(in)))      out_d140 = 1'b1;
+
+	always @(above(V(in) - V(ref_141)))      out_d141 = 1'b0;
+	always @(above(V(ref_141) - V(in)))      out_d141 = 1'b1;
+
+	always @(above(V(in) - V(ref_142)))      out_d142 = 1'b0;
+	always @(above(V(ref_142) - V(in)))      out_d142 = 1'b1;
+
+	always @(above(V(in) - V(ref_143)))      out_d143 = 1'b0;
+	always @(above(V(ref_143) - V(in)))      out_d143 = 1'b1;
+
+	always @(above(V(in) - V(ref_144)))      out_d144 = 1'b0;
+	always @(above(V(ref_144) - V(in)))      out_d144 = 1'b1;
+
+	always @(above(V(in) - V(ref_145)))      out_d145 = 1'b0;
+	always @(above(V(ref_145) - V(in)))      out_d145 = 1'b1;
+
+	always @(above(V(in) - V(ref_146)))      out_d146 = 1'b0;
+	always @(above(V(ref_146) - V(in)))      out_d146 = 1'b1;
+
+	always @(above(V(in) - V(ref_147)))      out_d147 = 1'b0;
+	always @(above(V(ref_147) - V(in)))      out_d147 = 1'b1;
+
+	always @(above(V(in) - V(ref_148)))      out_d148 = 1'b0;
+	always @(above(V(ref_148) - V(in)))      out_d148 = 1'b1;
+
+	always @(above(V(in) - V(ref_149)))      out_d149 = 1'b0;
+	always @(above(V(ref_149) - V(in)))      out_d149 = 1'b1;
+
+	always @(above(V(in) - V(ref_150)))      out_d150 = 1'b0;
+	always @(above(V(ref_150) - V(in)))      out_d150 = 1'b1;
+
+	always @(above(V(in) - V(ref_151)))      out_d151 = 1'b0;
+	always @(above(V(ref_151) - V(in)))      out_d151 = 1'b1;
+
+	always @(above(V(in) - V(ref_152)))      out_d152 = 1'b0;
+	always @(above(V(ref_152) - V(in)))      out_d152 = 1'b1;
+
+	always @(above(V(in) - V(ref_153)))      out_d153 = 1'b0;
+	always @(above(V(ref_153) - V(in)))      out_d153 = 1'b1;
+
+	always @(above(V(in) - V(ref_154)))      out_d154 = 1'b0;
+	always @(above(V(ref_154) - V(in)))      out_d154 = 1'b1;
+
+	always @(above(V(in) - V(ref_155)))      out_d155 = 1'b0;
+	always @(above(V(ref_155) - V(in)))      out_d155 = 1'b1;
+
+	always @(above(V(in) - V(ref_156)))      out_d156 = 1'b0;
+	always @(above(V(ref_156) - V(in)))      out_d156 = 1'b1;
+
+	always @(above(V(in) - V(ref_157)))      out_d157 = 1'b0;
+	always @(above(V(ref_157) - V(in)))      out_d157 = 1'b1;
+
+	always @(above(V(in) - V(ref_158)))      out_d158 = 1'b0;
+	always @(above(V(ref_158) - V(in)))      out_d158 = 1'b1;
+
+	always @(above(V(in) - V(ref_159)))      out_d159 = 1'b0;
+	always @(above(V(ref_159) - V(in)))      out_d159 = 1'b1;
+
+	always @(above(V(in) - V(ref_160)))      out_d160 = 1'b0;
+	always @(above(V(ref_160) - V(in)))      out_d160 = 1'b1;
+
+	always @(above(V(in) - V(ref_161)))      out_d161 = 1'b0;
+	always @(above(V(ref_161) - V(in)))      out_d161 = 1'b1;
+
+	always @(above(V(in) - V(ref_162)))      out_d162 = 1'b0;
+	always @(above(V(ref_162) - V(in)))      out_d162 = 1'b1;
+
+	always @(above(V(in) - V(ref_163)))      out_d163 = 1'b0;
+	always @(above(V(ref_163) - V(in)))      out_d163 = 1'b1;
+
+	always @(above(V(in) - V(ref_164)))      out_d164 = 1'b0;
+	always @(above(V(ref_164) - V(in)))      out_d164 = 1'b1;
+
+	always @(above(V(in) - V(ref_165)))      out_d165 = 1'b0;
+	always @(above(V(ref_165) - V(in)))      out_d165 = 1'b1;
+
+	always @(above(V(in) - V(ref_166)))      out_d166 = 1'b0;
+	always @(above(V(ref_166) - V(in)))      out_d166 = 1'b1;
+
+	always @(above(V(in) - V(ref_167)))      out_d167 = 1'b0;
+	always @(above(V(ref_167) - V(in)))      out_d167 = 1'b1;
+
+	always @(above(V(in) - V(ref_168)))      out_d168 = 1'b0;
+	always @(above(V(ref_168) - V(in)))      out_d168 = 1'b1;
+
+	always @(above(V(in) - V(ref_169)))      out_d169 = 1'b0;
+	always @(above(V(ref_169) - V(in)))      out_d169 = 1'b1;
+
+	always @(above(V(in) - V(ref_170)))      out_d170 = 1'b0;
+	always @(above(V(ref_170) - V(in)))      out_d170 = 1'b1;
+
+	always @(above(V(in) - V(ref_171)))      out_d171 = 1'b0;
+	always @(above(V(ref_171) - V(in)))      out_d171 = 1'b1;
+
+	always @(above(V(in) - V(ref_172)))      out_d172 = 1'b0;
+	always @(above(V(ref_172) - V(in)))      out_d172 = 1'b1;
+
+	always @(above(V(in) - V(ref_173)))      out_d173 = 1'b0;
+	always @(above(V(ref_173) - V(in)))      out_d173 = 1'b1;
+
+	always @(above(V(in) - V(ref_174)))      out_d174 = 1'b0;
+	always @(above(V(ref_174) - V(in)))      out_d174 = 1'b1;
+
+	always @(above(V(in) - V(ref_175)))      out_d175 = 1'b0;
+	always @(above(V(ref_175) - V(in)))      out_d175 = 1'b1;
+
+	always @(above(V(in) - V(ref_176)))      out_d176 = 1'b0;
+	always @(above(V(ref_176) - V(in)))      out_d176 = 1'b1;
+
+	always @(above(V(in) - V(ref_177)))      out_d177 = 1'b0;
+	always @(above(V(ref_177) - V(in)))      out_d177 = 1'b1;
+
+	always @(above(V(in) - V(ref_178)))      out_d178 = 1'b0;
+	always @(above(V(ref_178) - V(in)))      out_d178 = 1'b1;
+
+	always @(above(V(in) - V(ref_179)))      out_d179 = 1'b0;
+	always @(above(V(ref_179) - V(in)))      out_d179 = 1'b1;
+
+	always @(above(V(in) - V(ref_180)))      out_d180 = 1'b0;
+	always @(above(V(ref_180) - V(in)))      out_d180 = 1'b1;
+
+	always @(above(V(in) - V(ref_181)))      out_d181 = 1'b0;
+	always @(above(V(ref_181) - V(in)))      out_d181 = 1'b1;
+
+	always @(above(V(in) - V(ref_182)))      out_d182 = 1'b0;
+	always @(above(V(ref_182) - V(in)))      out_d182 = 1'b1;
+
+	always @(above(V(in) - V(ref_183)))      out_d183 = 1'b0;
+	always @(above(V(ref_183) - V(in)))      out_d183 = 1'b1;
+
+	always @(above(V(in) - V(ref_184)))      out_d184 = 1'b0;
+	always @(above(V(ref_184) - V(in)))      out_d184 = 1'b1;
+
+	always @(above(V(in) - V(ref_185)))      out_d185 = 1'b0;
+	always @(above(V(ref_185) - V(in)))      out_d185 = 1'b1;
+
+	always @(above(V(in) - V(ref_186)))      out_d186 = 1'b0;
+	always @(above(V(ref_186) - V(in)))      out_d186 = 1'b1;
+
+	always @(above(V(in) - V(ref_187)))      out_d187 = 1'b0;
+	always @(above(V(ref_187) - V(in)))      out_d187 = 1'b1;
+
+	always @(above(V(in) - V(ref_188)))      out_d188 = 1'b0;
+	always @(above(V(ref_188) - V(in)))      out_d188 = 1'b1;
+
+	always @(above(V(in) - V(ref_189)))      out_d189 = 1'b0;
+	always @(above(V(ref_189) - V(in)))      out_d189 = 1'b1;
+
+	always @(above(V(in) - V(ref_190)))      out_d190 = 1'b0;
+	always @(above(V(ref_190) - V(in)))      out_d190 = 1'b1;
+
+	always @(above(V(in) - V(ref_191)))      out_d191 = 1'b0;
+	always @(above(V(ref_191) - V(in)))      out_d191 = 1'b1;
+
+	always @(above(V(in) - V(ref_192)))      out_d192 = 1'b0;
+	always @(above(V(ref_192) - V(in)))      out_d192 = 1'b1;
+
+	always @(above(V(in) - V(ref_193)))      out_d193 = 1'b0;
+	always @(above(V(ref_193) - V(in)))      out_d193 = 1'b1;
+
+	always @(above(V(in) - V(ref_194)))      out_d194 = 1'b0;
+	always @(above(V(ref_194) - V(in)))      out_d194 = 1'b1;
+
+	always @(above(V(in) - V(ref_195)))      out_d195 = 1'b0;
+	always @(above(V(ref_195) - V(in)))      out_d195 = 1'b1;
+
+	always @(above(V(in) - V(ref_196)))      out_d196 = 1'b0;
+	always @(above(V(ref_196) - V(in)))      out_d196 = 1'b1;
+
+	always @(above(V(in) - V(ref_197)))      out_d197 = 1'b0;
+	always @(above(V(ref_197) - V(in)))      out_d197 = 1'b1;
+
+	always @(above(V(in) - V(ref_198)))      out_d198 = 1'b0;
+	always @(above(V(ref_198) - V(in)))      out_d198 = 1'b1;
+
+	always @(above(V(in) - V(ref_199)))      out_d199 = 1'b0;
+	always @(above(V(ref_199) - V(in)))      out_d199 = 1'b1;
+
+	always @(above(V(in) - V(ref_200)))      out_d200 = 1'b0;
+	always @(above(V(ref_200) - V(in)))      out_d200 = 1'b1;
+
+	always @(above(V(in) - V(ref_201)))      out_d201 = 1'b0;
+	always @(above(V(ref_201) - V(in)))      out_d201 = 1'b1;
+
+	always @(above(V(in) - V(ref_202)))      out_d202 = 1'b0;
+	always @(above(V(ref_202) - V(in)))      out_d202 = 1'b1;
+
+	always @(above(V(in) - V(ref_203)))      out_d203 = 1'b0;
+	always @(above(V(ref_203) - V(in)))      out_d203 = 1'b1;
+
+	always @(above(V(in) - V(ref_204)))      out_d204 = 1'b0;
+	always @(above(V(ref_204) - V(in)))      out_d204 = 1'b1;
+
+	always @(above(V(in) - V(ref_205)))      out_d205 = 1'b0;
+	always @(above(V(ref_205) - V(in)))      out_d205 = 1'b1;
+
+	always @(above(V(in) - V(ref_206)))      out_d206 = 1'b0;
+	always @(above(V(ref_206) - V(in)))      out_d206 = 1'b1;
+
+	always @(above(V(in) - V(ref_207)))      out_d207 = 1'b0;
+	always @(above(V(ref_207) - V(in)))      out_d207 = 1'b1;
+
+	always @(above(V(in) - V(ref_208)))      out_d208 = 1'b0;
+	always @(above(V(ref_208) - V(in)))      out_d208 = 1'b1;
+
+	always @(above(V(in) - V(ref_209)))      out_d209 = 1'b0;
+	always @(above(V(ref_209) - V(in)))      out_d209 = 1'b1;
+
+	always @(above(V(in) - V(ref_210)))      out_d210 = 1'b0;
+	always @(above(V(ref_210) - V(in)))      out_d210 = 1'b1;
+
+	always @(above(V(in) - V(ref_211)))      out_d211 = 1'b0;
+	always @(above(V(ref_211) - V(in)))      out_d211 = 1'b1;
+
+	always @(above(V(in) - V(ref_212)))      out_d212 = 1'b0;
+	always @(above(V(ref_212) - V(in)))      out_d212 = 1'b1;
+
+	always @(above(V(in) - V(ref_213)))      out_d213 = 1'b0;
+	always @(above(V(ref_213) - V(in)))      out_d213 = 1'b1;
+
+	always @(above(V(in) - V(ref_214)))      out_d214 = 1'b0;
+	always @(above(V(ref_214) - V(in)))      out_d214 = 1'b1;
+
+	always @(above(V(in) - V(ref_215)))      out_d215 = 1'b0;
+	always @(above(V(ref_215) - V(in)))      out_d215 = 1'b1;
+
+	always @(above(V(in) - V(ref_216)))      out_d216 = 1'b0;
+	always @(above(V(ref_216) - V(in)))      out_d216 = 1'b1;
+
+	always @(above(V(in) - V(ref_217)))      out_d217 = 1'b0;
+	always @(above(V(ref_217) - V(in)))      out_d217 = 1'b1;
+
+	always @(above(V(in) - V(ref_218)))      out_d218 = 1'b0;
+	always @(above(V(ref_218) - V(in)))      out_d218 = 1'b1;
+
+	always @(above(V(in) - V(ref_219)))      out_d219 = 1'b0;
+	always @(above(V(ref_219) - V(in)))      out_d219 = 1'b1;
+
+	always @(above(V(in) - V(ref_220)))      out_d220 = 1'b0;
+	always @(above(V(ref_220) - V(in)))      out_d220 = 1'b1;
+
+	always @(above(V(in) - V(ref_221)))      out_d221 = 1'b0;
+	always @(above(V(ref_221) - V(in)))      out_d221 = 1'b1;
+
+	always @(above(V(in) - V(ref_222)))      out_d222 = 1'b0;
+	always @(above(V(ref_222) - V(in)))      out_d222 = 1'b1;
+
+	always @(above(V(in) - V(ref_223)))      out_d223 = 1'b0;
+	always @(above(V(ref_223) - V(in)))      out_d223 = 1'b1;
+
+	always @(above(V(in) - V(ref_224)))      out_d224 = 1'b0;
+	always @(above(V(ref_224) - V(in)))      out_d224 = 1'b1;
+
+	always @(above(V(in) - V(ref_225)))      out_d225 = 1'b0;
+	always @(above(V(ref_225) - V(in)))      out_d225 = 1'b1;
+
+	always @(above(V(in) - V(ref_226)))      out_d226 = 1'b0;
+	always @(above(V(ref_226) - V(in)))      out_d226 = 1'b1;
+
+	always @(above(V(in) - V(ref_227)))      out_d227 = 1'b0;
+	always @(above(V(ref_227) - V(in)))      out_d227 = 1'b1;
+
+	always @(above(V(in) - V(ref_228)))      out_d228 = 1'b0;
+	always @(above(V(ref_228) - V(in)))      out_d228 = 1'b1;
+
+	always @(above(V(in) - V(ref_229)))      out_d229 = 1'b0;
+	always @(above(V(ref_229) - V(in)))      out_d229 = 1'b1;
+
+	always @(above(V(in) - V(ref_230)))      out_d230 = 1'b0;
+	always @(above(V(ref_230) - V(in)))      out_d230 = 1'b1;
+
+	always @(above(V(in) - V(ref_231)))      out_d231 = 1'b0;
+	always @(above(V(ref_231) - V(in)))      out_d231 = 1'b1;
+
+	always @(above(V(in) - V(ref_232)))      out_d232 = 1'b0;
+	always @(above(V(ref_232) - V(in)))      out_d232 = 1'b1;
+
+	always @(above(V(in) - V(ref_233)))      out_d233 = 1'b0;
+	always @(above(V(ref_233) - V(in)))      out_d233 = 1'b1;
+
+	always @(above(V(in) - V(ref_234)))      out_d234 = 1'b0;
+	always @(above(V(ref_234) - V(in)))      out_d234 = 1'b1;
+
+	always @(above(V(in) - V(ref_235)))      out_d235 = 1'b0;
+	always @(above(V(ref_235) - V(in)))      out_d235 = 1'b1;
+
+	always @(above(V(in) - V(ref_236)))      out_d236 = 1'b0;
+	always @(above(V(ref_236) - V(in)))      out_d236 = 1'b1;
+
+	always @(above(V(in) - V(ref_237)))      out_d237 = 1'b0;
+	always @(above(V(ref_237) - V(in)))      out_d237 = 1'b1;
+
+	always @(above(V(in) - V(ref_238)))      out_d238 = 1'b0;
+	always @(above(V(ref_238) - V(in)))      out_d238 = 1'b1;
+
+	always @(above(V(in) - V(ref_239)))      out_d239 = 1'b0;
+	always @(above(V(ref_239) - V(in)))      out_d239 = 1'b1;
+
+	always @(above(V(in) - V(ref_240)))      out_d240 = 1'b0;
+	always @(above(V(ref_240) - V(in)))      out_d240 = 1'b1;
+
+	always @(above(V(in) - V(ref_241)))      out_d241 = 1'b0;
+	always @(above(V(ref_241) - V(in)))      out_d241 = 1'b1;
+
+	always @(above(V(in) - V(ref_242)))      out_d242 = 1'b0;
+	always @(above(V(ref_242) - V(in)))      out_d242 = 1'b1;
+
+	always @(above(V(in) - V(ref_243)))      out_d243 = 1'b0;
+	always @(above(V(ref_243) - V(in)))      out_d243 = 1'b1;
+
+	always @(above(V(in) - V(ref_244)))      out_d244 = 1'b0;
+	always @(above(V(ref_244) - V(in)))      out_d244 = 1'b1;
+
+	always @(above(V(in) - V(ref_245)))      out_d245 = 1'b0;
+	always @(above(V(ref_245) - V(in)))      out_d245 = 1'b1;
+
+	always @(above(V(in) - V(ref_246)))      out_d246 = 1'b0;
+	always @(above(V(ref_246) - V(in)))      out_d246 = 1'b1;
+
+	always @(above(V(in) - V(ref_247)))      out_d247 = 1'b0;
+	always @(above(V(ref_247) - V(in)))      out_d247 = 1'b1;
+
+	always @(above(V(in) - V(ref_248)))      out_d248 = 1'b0;
+	always @(above(V(ref_248) - V(in)))      out_d248 = 1'b1;
+
+	always @(above(V(in) - V(ref_249)))      out_d249 = 1'b0;
+	always @(above(V(ref_249) - V(in)))      out_d249 = 1'b1;
+
+	always @(above(V(in) - V(ref_250)))      out_d250 = 1'b0;
+	always @(above(V(ref_250) - V(in)))      out_d250 = 1'b1;
+
+	always @(above(V(in) - V(ref_251)))      out_d251 = 1'b0;
+	always @(above(V(ref_251) - V(in)))      out_d251 = 1'b1;
+
+	always @(above(V(in) - V(ref_252)))      out_d252 = 1'b0;
+	always @(above(V(ref_252) - V(in)))      out_d252 = 1'b1;
+
+	always @(above(V(in) - V(ref_253)))      out_d253 = 1'b0;
+	always @(above(V(ref_253) - V(in)))      out_d253 = 1'b1;
+
+	always @(above(V(in) - V(ref_254)))      out_d254 = 1'b0;
+	always @(above(V(ref_254) - V(in)))      out_d254 = 1'b1;
+
+	always @(above(V(in) - V(ref_255)))      out_d255 = 1'b0;
+	always @(above(V(ref_255) - V(in)))      out_d255 = 1'b1;
+
+
+	assign out_d = {out_d0, out_d1, out_d2, out_d3, out_d4, out_d5, out_d6, out_d7, out_d8, out_d9, out_d10, out_d11, out_d12, out_d13, out_d14, out_d15, out_d16, out_d17, out_d18, out_d19, out_d20, out_d21, out_d22, out_d23, out_d24, out_d25, out_d26, out_d27, out_d28, out_d29, out_d30, out_d31, out_d32, out_d33, out_d34, out_d35, out_d36, out_d37, out_d38, out_d39, out_d40, out_d41, out_d42, out_d43, out_d44, out_d45, out_d46, out_d47, out_d48, out_d49, out_d50, out_d51, out_d52, out_d53, out_d54, out_d55, out_d56, out_d57, out_d58, out_d59, out_d60, out_d61, out_d62, out_d63, out_d64, out_d65, out_d66, out_d67, out_d68, out_d69, out_d70, out_d71, out_d72, out_d73, out_d74, out_d75, out_d76, out_d77, out_d78, out_d79, out_d80, out_d81, out_d82, out_d83, out_d84, out_d85, out_d86, out_d87, out_d88, out_d89, out_d90, out_d91, out_d92, out_d93, out_d94, out_d95, out_d96, out_d97, out_d98, out_d99, out_d100, out_d101, out_d102, out_d103, out_d104, out_d105, out_d106, out_d107, out_d108, out_d109, out_d110, out_d111, out_d112, out_d113, out_d114, out_d115, out_d116, out_d117, out_d118, out_d119, out_d120, out_d121, out_d122, out_d123, out_d124, out_d125, out_d126, out_d127, out_d128, out_d129, out_d130, out_d131, out_d132, out_d133, out_d134, out_d135, out_d136, out_d137, out_d138, out_d139, out_d140, out_d141, out_d142, out_d143, out_d144, out_d145, out_d146, out_d147, out_d148, out_d149, out_d150, out_d151, out_d152, out_d153, out_d154, out_d155, out_d156, out_d157, out_d158, out_d159, out_d160, out_d161, out_d162, out_d163, out_d164, out_d165, out_d166, out_d167, out_d168, out_d169, out_d170, out_d171, out_d172, out_d173, out_d174, out_d175, out_d176, out_d177, out_d178, out_d179, out_d180, out_d181, out_d182, out_d183, out_d184, out_d185, out_d186, out_d187, out_d188, out_d189, out_d190, out_d191, out_d192, out_d193, out_d194, out_d195, out_d196, out_d197, out_d198, out_d199, out_d200, out_d201, out_d202, out_d203, out_d204, out_d205, out_d206, out_d207, out_d208, out_d209, out_d210, out_d211, out_d212, out_d213, out_d214, out_d215, out_d216, out_d217, out_d218, out_d219, out_d220, out_d221, out_d222, out_d223, out_d224, out_d225, out_d226, out_d227, out_d228, out_d229, out_d230, out_d231, out_d232, out_d233, out_d234, out_d235, out_d236, out_d237, out_d238, out_d239, out_d240, out_d241, out_d242, out_d243, out_d244, out_d245, out_d246, out_d247, out_d248, out_d249, out_d250, out_d251, out_d252, out_d253, out_d254, out_d255};
+
+
+endmodule 
