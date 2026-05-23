@@ -135,24 +135,3 @@ The resulting critical path is bounded by the loop boundary.
 ![Domain](https://img.shields.io/badge/Domain-Mixed--Signal%20IC%20Design-green)
 
 ---
-
-## Project Structure
-
-```
-.
-├── analog/          # Virtuoso schematics & Spectre simulation configs
-├── digital/         # Verilog RTL source files
-│   ├── mad_filter/
-│   ├── abs_unit/
-│   ├── rms_threshold/
-│   └── spike_detector/
-├── synthesis/       # Genus scripts & reports
-├── sim/             # Testbenches & simulation waveforms
-└── docs/            # Report and figures
-```
-
----
-
-## Author
-
-**[Il tuo Nome e Cognome]** · MSCS Final Project · May 2026
