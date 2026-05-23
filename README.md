@@ -1,4 +1,4 @@
-# 🧠 Real-Time Spike Detection Pipeline (STILL UNDER REVIEW)
+# Real-Time Spike Detection Pipeline (STILL UNDER REVIEW)
 **MSCS Final Project** · Analog-Mixed Signal IC Design · Cadence Suite
 
 > End-to-end neural spike detection pipeline for an implantable Brain-Computer Interface, from analog signal acquisition to digital spike classification.
