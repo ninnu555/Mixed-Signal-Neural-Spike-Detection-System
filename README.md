@@ -22,16 +22,16 @@ The analog section is responsible for signal conditioning and digitization.
 
 *   **Anti-Aliasing Filter:** 
     *   1st order active Low-Pass Filter (LPF)
-    *   **Parameters:** $R_1 = R_2 = 3M\Omega$, $C = 10pF$
-    *   **Cut-off Frequency ($f_c$):** 5 kHz
+    *   **Parameters:** R1 = R2 = 3 MΩ, C = 10 pF
+    *   **Cut-off Frequency (fc):** 5 kHz
 *   **Sample & Hold (S&H):**
-    *   Must remain stable for $t = T_s / 2 = 20.83 \mu s$
-    *   **Capacitance:** $C_{S\&H} = 100 nF$
+    *   Must remain stable for t = Ts / 2 = 20.83 µs
+    *   **Capacitance:** C_S&H = 100 nF
 *   **Flash ADC (8-bit):**
-    *   **Resistor Network (ResNet):** Bipolar power supply ($V_{REF} = \pm 1.5V$) for an input excursion of -1.22V to 0.88V. First and last resistors are $R/2$ to reduce quantization error.
+    *   **Resistor Network (ResNet):** Bipolar power supply (V_REF = ± 1.5V) for an input excursion of -1.22V to 0.88V. First and last resistors are R/2 to reduce quantization error.
     *   **Comparator Network (CmpNet):** Sequential comparators to prevent glitch propagation, utilizing Thermometer Encoding.
     *   **NAND Network (NandNet):** 3-input NANDs for One-Hot Encoding and basic Bubble Fixing.
-    *   **Encoder:** Maps output to a centered interval $[-128, 127]$ with overvoltage correction (saturates to extremes).
+    *   **Encoder:** Maps output to a centered interval [-128, 127] with overvoltage correction (saturates to extremes).
 
 #### 🫧 Bubble Error Correction
 *   **Type "1" bubbles (any order):** Solved by the 3-input NAND configuration.
@@ -42,11 +42,11 @@ The analog section is responsible for signal conditioning and digitization.
 
 ### 2. 💻 Digital Pre-Processing
 
-The digital domain extracts the spike features from the raw ADC output. The pipeline operates efficiently under a throughput constraint of 100 channels $	imes$ 24 kHz.
+The digital domain extracts the spike features from the raw ADC output. The pipeline operates efficiently under a throughput constraint of 100 channels × 24 kHz.
 
-*   **Filtering Stage (MAD Filter):** High-pass filter that removes the 0-400 Hz frequency band. Designed with a **Parallel** structure to achieve the lowest power consumption compared to folded or $L=3$ parallel architectures.
+*   **Filtering Stage (MAD Filter):** High-pass filter that removes the 0-400 Hz frequency band. Designed with a **Parallel** structure to achieve the lowest power consumption compared to folded or L=3 parallel architectures.
 *   **Emphasis Stage (ABS):** Applies an absolute value to the input to make the spike waveform easily distinguishable from background noise.
-*   **Threshold Computation:** Computes a dynamic threshold using the Root Mean Square ($RMS^2$) value over a window of $N$ samples, multiplied by a corrective coefficient.
+*   **Threshold Computation:** Computes a dynamic threshold using the Root Mean Square (RMS²) value over a window of N samples, multiplied by a corrective coefficient.
 *   **Spike Detection:** Compares the emphasized signal against the computed threshold to flag neural spikes.
 
 ---
@@ -65,7 +65,7 @@ Five distinct versions were synthesized and compared:
 
 ### 📊 Synthesis Comparison
 
-| Version | Power [$\mu W$] | Area [$\mu m^2$] | Timing [$ps$] |
+| Version | Power [µW] | Area [µm²] | Timing [ps] |
 | :--- | :--- | :--- | :--- |
 | **BASE** | 22.321 | 135,705 | 381,060 |
 | **OPT** | 17.749 | 24,982 | 385,334 |
