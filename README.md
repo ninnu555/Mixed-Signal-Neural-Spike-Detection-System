@@ -1,10 +1,10 @@
 <div align="center">
-  <h1>🧠 Real-Time Spike Detection Pipeline</h1>
+  <h1>Real-Time Spike Detection Pipeline</h1>
   <p><strong>MSCS Final Project - Università degli Studi di Cagliari (UNICA)</strong></p>
   <p><em>Implantable Brain-Computer Interface (BCI) Application</em></p>
 </div>
 
-## 📖 Project Overview
+## Project Overview
 
 This repository contains the design and implementation of a **Real-Time Spike Detection Pipeline** for implantable Brain-Computer Interfaces (BCIs). The project involves the custom design of both the **Analog Front-End (AFE)** and the **Digital Pre-Processing** stages. 
 
@@ -12,11 +12,11 @@ The primary design focus is achieving **high accuracy** with **ultra-low power c
 
 ---
 
-## ⚙️ System Architecture
+## System Architecture
 
 The system takes an analog signal from a neural sensor, digitizes it, processes the features, and sends commands to an application decoder. The main constraints include a **sampling frequency of 24 kHz**, recognizing that neural activity characteristics typically lie in the range of a few kHz.
 
-### 1. 🔌 Analog Front-End (AFE)
+### 1. Analog Front-End (AFE)
 
 The analog section is responsible for signal conditioning and digitization.
 
@@ -33,14 +33,14 @@ The analog section is responsible for signal conditioning and digitization.
     *   **NAND Network (NandNet):** 3-input NANDs for One-Hot Encoding and basic Bubble Fixing.
     *   **Encoder:** Maps output to a centered interval [-128, 127] with overvoltage correction (saturates to extremes).
 
-#### 🫧 Bubble Error Correction
+#### Bubble Error Correction
 *   **Type "1" bubbles (any order):** Solved by the 3-input NAND configuration.
 *   **Type "0" bubbles (order > 1):** Solved by the encoder's reading direction.
 *   *Note:* 1st order type "0" bubbles are the only unsolvable errors in this specific architecture.
 
 ---
 
-### 2. 💻 Digital Pre-Processing
+### 2. Digital Pre-Processing
 
 The digital domain extracts the spike features from the raw ADC output. The pipeline operates efficiently under a throughput constraint of 100 channels × 24 kHz.
 
@@ -51,7 +51,7 @@ The digital domain extracts the spike features from the raw ADC output. The pipe
 
 ---
 
-## 🛠️ Hardware Optimizations & Synthesis
+## Hardware Optimizations & Synthesis
 
 To achieve ultra-low power consumption, several RTL optimizations were applied, including fixed weights, clock gating, pipelining, voltage scaling, registered outputs, and targeted truncation. 
 
@@ -63,7 +63,7 @@ Five distinct versions were synthesized and compared:
 4.  **EXT:** Output-aware version, dimensioned by profiling 10s of input values for bit-width reduction.
 5.  **EXT_T2:** Extreme optimization combining output-aware reduction and truncation.
 
-### 📊 Synthesis Comparison
+### Synthesis Comparison
 
 | Version | Power [µW] | Area [µm²] | Timing [ps] |
 | :--- | :--- | :--- | :--- |
@@ -77,7 +77,7 @@ Five distinct versions were synthesized and compared:
 
 ---
 
-## 📈 Simulation & Results
+## Simulation & Results
 
 Mixed-signal simulations demonstrate robust spike detection:
 *   **OPT Version:** Successfully detected **11/11** spikes (100% accuracy, 0 False Positives).
@@ -85,13 +85,9 @@ Mixed-signal simulations demonstrate robust spike detection:
 
 ---
 
-## 👥 Authors
+## Authors
 **Students:**
 *   Matteo Matta
 *   Fabio Piras
-
-**Professors / Supervisors:**
-*   Prof. Gianluca Leone
-*   Prof. Francesco Ratto
 
 *MSc in Computer Science (MSCS) - Università degli Studi di Cagliari*
