@@ -1,137 +1,97 @@
-# Real-Time Spike Detection Pipeline (STILL UNDER REVIEW)
-**MSCS Final Project** · Analog-Mixed Signal IC Design · Cadence Suite
+<div align="center">
+  <h1>🧠 Real-Time Spike Detection Pipeline</h1>
+  <p><strong>MSCS Final Project - Università degli Studi di Cagliari (UNICA)</strong></p>
+  <p><em>Implantable Brain-Computer Interface (BCI) Application</em></p>
+</div>
 
-> End-to-end neural spike detection pipeline for an implantable Brain-Computer Interface, from analog signal acquisition to digital spike classification.
+## 📖 Project Overview
 
----
+This repository contains the design and implementation of a **Real-Time Spike Detection Pipeline** for implantable Brain-Computer Interfaces (BCIs). The project involves the custom design of both the **Analog Front-End (AFE)** and the **Digital Pre-Processing** stages. 
 
-## Overview
-
-This project implements the **Analog-to-Digital Converter** and **signal pre-processing module** of a brain-computer interface targeting an implantable integrated circuit. The system acquires, filters, and detects neural spike activity in a simulated environment using the Cadence suite.
-
-| Tool | Purpose |
-|---|---|
-| **Virtuoso** | Analog & mixed-signal schematic design |
-| **Spectre** | Circuit simulation |
-| **XCelium** | Digital logic simulation |
-| **Genus** | Synthesis & optimization analysis |
+The primary design focus is achieving **high accuracy** with **ultra-low power consumption**, meeting the strict constraints required for neural implants used in applications such as prosthetic control, motorized wheelchairs, and text decoders.
 
 ---
 
-## Architecture
+## ⚙️ System Architecture
 
-### Analog Front-End
+The system takes an analog signal from a neural sensor, digitizes it, processes the features, and sends commands to an application decoder. The main constraints include a **sampling frequency of 24 kHz**, recognizing that neural activity characteristics typically lie in the range of a few kHz.
 
-```
-Input Signal (amplified)
-        │
-        ▼
- ┌─────────────┐
- │  Low-Pass   │  fc ≈ 5.29 kHz  (anti-aliasing)
- │   Filter    │  R = 3 MΩ, C = 5 pF
- └──────┬──────┘
-        │
-        ▼
- ┌─────────────┐
- │  Sample &   │  fs = 24 kSample/s
- │    Hold     │  RS&H = 1 kΩ, CS&H = 11.68 nF
- └──────┬──────┘
-        │
-        ▼
- ┌─────────────┐
- │  8-bit      │  Vref = 3 V → VLSB ≈ 11.72 mV
- │  Flash ADC  │  Output range: [−128, 127]
- └─────────────┘
-```
+### 1. 🔌 Analog Front-End (AFE)
 
-**Key choices:**
-- 1st-order RC low-pass filter for simplicity and minimal component count
-- Flash ADC with 3-input NAND bubble-suppression logic (heals "1"-type bubbles in the thermometer code)
-- Half-valued edge resistors to center the ADC transfer characteristic and minimize quantization error
-- Clock-synchronized registers on comparator outputs to prevent glitch propagation
+The analog section is responsible for signal conditioning and digitization.
 
-### Digital Back-End
+*   **Anti-Aliasing Filter:** 
+    *   1st order active Low-Pass Filter (LPF)
+    *   **Parameters:** $R_1 = R_2 = 3M\Omega$, $C = 10pF$
+    *   **Cut-off Frequency ($f_c$):** 5 kHz
+*   **Sample & Hold (S&H):**
+    *   Must remain stable for $t = T_s / 2 = 20.83 \mu s$
+    *   **Capacitance:** $C_{S\&H} = 100 nF$
+*   **Flash ADC (8-bit):**
+    *   **Resistor Network (ResNet):** Bipolar power supply ($V_{REF} = \pm 1.5V$) for an input excursion of -1.22V to 0.88V. First and last resistors are $R/2$ to reduce quantization error.
+    *   **Comparator Network (CmpNet):** Sequential comparators to prevent glitch propagation, utilizing Thermometer Encoding.
+    *   **NAND Network (NandNet):** 3-input NANDs for One-Hot Encoding and basic Bubble Fixing.
+    *   **Encoder:** Maps output to a centered interval $[-128, 127]$ with overvoltage correction (saturates to extremes).
 
-```
-ADC Output (Q2.6)
-        │
-        ▼
- ┌─────────────┐
- │ MAD Filter  │  Removes 0–400 Hz band
- │  (FIR)      │  y[n] = 2x[n] − x[n−1] − x[n−2]
- └──────┬──────┘  Parallel architecture (lower energy vs. folded)
-        │
-        ▼
- ┌─────────────┐
- │  ABS Unit   │  Emphasizes spikes, drops sign bit
- └──────┬──────┘
-        │
-        ├──────────────────────────────┐
-        ▼                              ▼
- ┌─────────────┐               ┌──────────────┐
- │   Signal²   │               │   Signal²    │
- │             │               │  Accumulate  │  N = 2^k samples
- └──────┬──────┘               │  × correction│
-        │                      │  >> shift    │
-        │                      └──────┬───────┘
-        │                             │ Threshold
-        ▼                             ▼
- ┌──────────────────────────────────────┐
- │              COMPARE                 │  Spike detected if signal² > threshold
- └──────────────────┬───────────────────┘
-                    │
-                    ▼
-              Spike Output
-          (dead time: 0.5 ms)
-```
+#### 🫧 Bubble Error Correction
+*   **Type "1" bubbles (any order):** Solved by the 3-input NAND configuration.
+*   **Type "0" bubbles (order > 1):** Solved by the encoder's reading direction.
+*   *Note:* 1st order type "0" bubbles are the only unsolvable errors in this specific architecture.
 
 ---
 
-## Fixed-Point Optimization
+### 2. 💻 Digital Pre-Processing
 
-Three progressive optimization stages reduce hardware cost while preserving detection accuracy.
+The digital domain extracts the spike features from the raw ADC output. The pipeline operates efficiently under a throughput constraint of 100 channels $	imes$ 24 kHz.
 
-| Stage | Strategy | Result |
-|---|---|---|
-| **Worst-case** | Full bit-width from arithmetic propagation | Baseline (no overflow) |
-| **Approx. opt.** | Clip input −128 → −127; drop ABS sign bit; truncate 3 LSBs of squared signal | Narrower datapaths, same accuracy |
-| **Sim.-based opt.** | Bit-widths sized to actual observed signal values (MAD max: ±37) | Final threshold stored in **4 bits** |
-
-Notable savings: accumulator shrinks to 18 bits; post-shift threshold fits in 7 bits; after 3-bit truncation, only 4 bits needed for the final comparison.
+*   **Filtering Stage (MAD Filter):** High-pass filter that removes the 0-400 Hz frequency band. Designed with a **Parallel** structure to achieve the lowest power consumption compared to folded or $L=3$ parallel architectures.
+*   **Emphasis Stage (ABS):** Applies an absolute value to the input to make the spike waveform easily distinguishable from background noise.
+*   **Threshold Computation:** Computes a dynamic threshold using the Root Mean Square ($RMS^2$) value over a window of $N$ samples, multiplied by a corrective coefficient.
+*   **Spike Detection:** Compares the emphasized signal against the computed threshold to flag neural spikes.
 
 ---
 
-## Critical Path Optimization
+## 🛠️ Hardware Optimizations & Synthesis
 
-Sequential registers were inserted at three points to break the combinational critical path and reduce glitches:
+To achieve ultra-low power consumption, several RTL optimizations were applied, including fixed weights, clock gating, pipelining, voltage scaling, registered outputs, and targeted truncation. 
 
-1. Adder output inside the MAD filter
-2. First multiplier output inside the RMS module
-3. Shifter output
+Five distinct versions were synthesized and compared:
 
-The resulting critical path is bounded by the loop boundary.
+1.  **BASE:** Worst-case version, no optimizations.
+2.  **OPT:** Architectural optimizations and low-power techniques applied.
+3.  **OPT_T2:** Truncation of 2 LSBs in the "RMS" and "Spike Detector" modules.
+4.  **EXT:** Output-aware version, dimensioned by profiling 10s of input values for bit-width reduction.
+5.  **EXT_T2:** Extreme optimization combining output-aware reduction and truncation.
+
+### 📊 Synthesis Comparison
+
+| Version | Power [$\mu W$] | Area [$\mu m^2$] | Timing [$ps$] |
+| :--- | :--- | :--- | :--- |
+| **BASE** | 22.321 | 135,705 | 381,060 |
+| **OPT** | 17.749 | 24,982 | 385,334 |
+| **OPT_T2** | 16.660 | 24,199 | 388,372 |
+| **EXT** | 13.120 | 15,292 | 395,724 |
+| **EXT_T2** | 12.032 | 14,370 | 398,390 |
+
+*The EXT_T2 version achieves an area reduction of ~89% and a power reduction of ~46% compared to the BASE implementation.*
+
+---
+
+## 📈 Simulation & Results
+
+Mixed-signal simulations demonstrate robust spike detection:
+*   **OPT Version:** Successfully detected **11/11** spikes (100% accuracy, 0 False Positives).
+*   **OPT_T2 Version:** Detected 13/11 spikes (Introduced 2 False Positives due to aggressive truncation).
 
 ---
 
-## Parameters
+## 👥 Authors
+**Students:**
+*   Matteo Matta
+*   Fabio Piras
 
-| Parameter | Value |
-|---|---|
-| Sampling rate | 24 kSample/s |
-| Anti-aliasing cutoff | ≈ 5.29 kHz |
-| ADC resolution | 8 bit |
-| ADC reference voltage | 3 V (VLSB ≈ 11.72 mV) |
-| Spike dead time | 0.5 ms |
-| RMS window size | Power-of-2 samples (e.g. 2¹⁴) |
-| Correction factor (max) | 31 |
-| MAD filter weights | b0 = 2, b1 = −1, b2 = −1 |
+**Professors / Supervisors:**
+*   Prof. Gianluca Leone
+*   Prof. Francesco Ratto
 
----
-
-## Tools & Technologies
-
-![Cadence](https://img.shields.io/badge/Cadence-Virtuoso%20%7C%20Spectre%20%7C%20XCelium%20%7C%20Genus-blue)
-![Language](https://img.shields.io/badge/HDL-Verilog-orange)
-![Domain](https://img.shields.io/badge/Domain-Mixed--Signal%20IC%20Design-green)
-
----
+*MSc in Computer Science (MSCS) - Università degli Studi di Cagliari*
